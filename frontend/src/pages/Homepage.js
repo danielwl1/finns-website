@@ -102,8 +102,8 @@ const Homepage = () => {
     
     if (entry) {
       return (
-        <div className="flex flex-col h-screen">
-          <div className="flex-grow overflow-y-auto p-6 md:p-8">
+        <div className="flex flex-col h-dvh">
+          <div className="grow overflow-y-auto p-6 md:p-8">
             <BlogEntry data={entry}/>
           </div>
           <div className="p-4 text-gray-600 text-lg text-right">
@@ -116,7 +116,7 @@ const Homepage = () => {
 
 
   return (
-  <div className="min-h-screen bg-gray-100  font-sans">
+  <div className="h-dvh flex bg-gray-100  font-sans">
     {/* Header */}
     <div className="fixed top-4 left-0 right-0 z-10">
        {/* Container with max width on larger screens */}
@@ -143,9 +143,7 @@ const Homepage = () => {
       {/* Book Container */}
       <div className="flex-grow top-4 mx-auto bg-white shadow-xl min-h-screen max-w-5xl mx-4 ">
         {/* Page Content */}
-        <div className="h-full">
-          {renderPage()}
-        </div>
+        {renderPage()}
         {/* Navigation Buttons */}
         <div className="fixed inset-y-0 left-0 right-0 pointer-events-none flex items-center justify-between">
           <div className="pointer-events-auto">
