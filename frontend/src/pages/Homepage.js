@@ -3,7 +3,7 @@ import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import Bookmark from '@mui/icons-material/Bookmark';
 import BlogEntry from '../components/BlogEntry';
-
+import haversine from 'haversine-distance';
 
 const Homepage = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -13,7 +13,27 @@ const Homepage = () => {
     const fetchEntries = async () => {
       try {
         const response = await fetch('https://api.todaycounts.de/api/log-entries?populate=*&sort=When:asc&pagination[pageSize]=100');
-        const data = await response.json();
+        let data: [] = await response.json();
+       
+        const startgps = { lat: 52.5522859, lon: 13.3789186};
+
+        let total = 0.0;
+	let lastgps = startgps;
+
+        data.data.forEach(function (entry) {
+          const thisgps = { 
+            lat: entry.Where.lat, 
+            lon: entry.Where.lng
+          };
+          const newdistance = haversine(lastgps, thisgps);
+
+          total += newdistance * 1.25;
+
+          lastgps = thisgps;
+
+          entry.km = Math.round(total / 1000);
+        });
+
         setBlogEntries(data.data || []);
       } catch (error) {
         console.error('Error fetching blog entries:', error);
@@ -83,12 +103,12 @@ const Homepage = () => {
                 className='w-full group'
                 >
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center border-b border-gray-200 pb-2">
-                  <span className="text-base md:text-lg font-medium">
+                  <div className="text-base md:text-lg font-medium">
                     <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem'}}>
                       {entry.Location|| 'Untitled'}
                     </h1>
-                  </span>
-                  <span className="text-sm md:text-base text-gray-600">{formatDate(entry.When)}</span>
+                  </div>
+                  <div className="flex-none text-sm md:text-base text-gray-600">{formatDate(entry.When)} | ≈{entry.km}km</div>
                   </div>
               </button>
             ))}
@@ -107,7 +127,7 @@ const Homepage = () => {
             <BlogEntry data={entry}/>
           </div>
           <div className="p-4 text-gray-600 text-lg text-right">
-            {formatDate(entry.When)}
+            {formatDate(entry.When)} | ≈{entry.km}km
           </div>
         </div>
       );
