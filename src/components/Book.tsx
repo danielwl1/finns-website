@@ -19,12 +19,12 @@ export default function Book({
 
     return (
         <>
-            <div className="relative flex flex-col h-full w-full">
+            <div key="eholy" className="relative flex flex-col h-full w-full">
                 <HeaderBookmark
                     isDisabled={previous !== null && currentlySelectedDay === null}
                     onClick={() => navigate('/Content')}
                 />
-                <div className="flex-grow min-h-0">{children}</div>
+                <div key="bookconat" className="flex-grow min-h-0">{children}</div>
                 <div className="flex-none">
                     <BottomBar
                         previous={previous}

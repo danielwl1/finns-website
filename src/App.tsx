@@ -3,6 +3,7 @@ import RoutingService from './services/RoutingService';
 import { createTheme } from '@mui/material/styles';
 import { orange, red } from '@mui/material/colors';
 import { ThemeProvider } from '@emotion/react';
+import { BrowserRouter } from 'react-router-dom';
 
 const theme = createTheme({
     palette: {
@@ -18,7 +19,9 @@ const theme = createTheme({
 const App = () => {
     return (
         <ThemeProvider theme={theme}>
-            <RoutingService />
+            <BrowserRouter>
+                <RoutingService />
+            </BrowserRouter>
         </ThemeProvider>
     );
 };
